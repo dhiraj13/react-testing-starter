@@ -9,6 +9,7 @@ describe("Greet", () => {
     expect(heading).toBeInTheDocument()
     expect(heading).toHaveTextContent(/dhiraj/i)
   })
+
   it("should render login button when name is not provided", () => {
     render(<Greet />)
 
