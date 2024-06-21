@@ -2,8 +2,23 @@ import { render, screen } from "@testing-library/react"
 import ProductList from "../../src/components/ProductList"
 import { server } from "../mocks/server"
 import { HttpResponse, http } from "msw"
+import { db } from "../mocks/db"
 
 describe("ProductList", () => {
+  const productIds: number[] = []
+
+  beforeAll(() => {
+    const number = [1, 2, 3]
+    number.forEach(() => {
+      const product = db.product.create()
+      productIds.push(product.id)
+    })
+  })
+
+  afterAll(() => {
+    db.product.deleteMany({ where: { id: { in: productIds } } })
+  })
+
   it("should render a list of products", async () => {
     render(<ProductList />)
 
