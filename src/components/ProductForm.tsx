@@ -1,24 +1,24 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Select, TextField } from "@radix-ui/themes";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { Product } from "../entities";
-import useCategories from "../hooks/useCategories";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Box, Button, Select, TextField } from "@radix-ui/themes"
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+import { Product } from "../entities"
+import useCategories from "../hooks/useCategories"
 import {
   ProductFormData,
   productFormSchema,
-} from "../validationSchemas/productSchema";
-import ErrorMessage from "./ErrorMessage";
+} from "../validationSchemas/productSchema"
+import ErrorMessage from "./ErrorMessage"
 
 interface Props {
-  product?: Product;
-  onSubmit: (product: ProductFormData) => Promise<void>;
+  product?: Product
+  onSubmit: (product: ProductFormData) => Promise<void>
 }
 
 const ProductForm = ({ product, onSubmit }: Props) => {
-  const { data: categories, isLoading } = useCategories();
-  const [isSubmitting, setSubmitting] = useState(false);
+  const { data: categories, isLoading } = useCategories()
+  const [isSubmitting, setSubmitting] = useState(false)
 
   const {
     register,
@@ -28,21 +28,21 @@ const ProductForm = ({ product, onSubmit }: Props) => {
   } = useForm<ProductFormData>({
     defaultValues: product,
     resolver: zodResolver(productFormSchema),
-  });
+  })
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <form
       name="product"
       onSubmit={handleSubmit(async (formData) => {
         try {
-          setSubmitting(true);
-          await onSubmit(formData);
+          setSubmitting(true)
+          await onSubmit(formData)
         } catch (error) {
-          toast.error("An unexpected error occurred");
+          toast.error("An unexpected error occurred")
         } finally {
-          setSubmitting(false);
+          setSubmitting(false)
         }
       })}
       className="space-y-3"
@@ -75,7 +75,7 @@ const ProductForm = ({ product, onSubmit }: Props) => {
               defaultValue={product?.categoryId.toString() || ""}
               onValueChange={(value) => field.onChange(+value)}
             >
-              <Select.Trigger placeholder="Category" />
+              <Select.Trigger aria-label="Category" placeholder="Category" />
               <Select.Content>
                 <Select.Group>
                   {categories?.map((category) => (
@@ -97,7 +97,7 @@ const ProductForm = ({ product, onSubmit }: Props) => {
         Submit
       </Button>
     </form>
-  );
-};
+  )
+}
 
-export default ProductForm;
+export default ProductForm
